@@ -1,0 +1,89 @@
+{
+  "name": "ikon-admin-web",
+  "version": "1.0.0",
+  "description": "Ikon - Admin Web",
+  "author": {
+    "name": "NUM | NaBa",
+    "url": "http://naranbat7.github.io",
+    "github": "https://github.com/naranbat7"
+  },
+  "contributors": [
+    {
+      "name": "Ikon Team",
+      "url": "http://www.alhay.mn"
+    }
+  ],
+  "homepage": ".",
+  "copyright": "Copyright Ikon LLC",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:naranbat7/alhay-admin-web"
+  },
+  "dependencies": {
+    "@coreui/chartjs": "^2.0.0",
+    "@coreui/coreui": "^3.4.0",
+    "@coreui/icons": "^2.0.0-rc.0",
+    "@coreui/icons-react": "^1.0.2",
+    "@coreui/react": "^3.4.0",
+    "@coreui/react-chartjs": "^1.0.1",
+    "@coreui/utils": "^1.3.1",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.3.2",
+    "axios": "^0.21.1",
+    "classnames": "^2.2.6",
+    "core-js": "^3.8.1",
+    "enzyme": "^3.11.0",
+    "moment": "^2.29.1",
+    "node-sass": "^4.14.1",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.1",
+    "react-app-polyfill": "^2.0.0",
+    "react-copy-to-clipboard": "^5.0.4",
+    "react-dom": "^17.0.1",
+    "react-google-recaptcha": "^2.1.0",
+    "react-lottie-player": "^1.2.0",
+    "react-quill": "^1.3.5",
+    "react-redux": "^7.2.2",
+    "react-router-dom": "^5.2.0",
+    "react-spinners": "^0.11.0",
+    "redux": "4.0.5",
+    "thousandify": "^1.0.2"
+  },
+  "devDependencies": {
+    "auto-changelog": "~2.2.1",
+    "react-scripts": "^4.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "test:cov": "npm test -- --coverage --watchAll=false",
+    "test:debug": "react-scripts --inspect-brk test --runInBand",
+    "eject": "react-scripts eject",
+    "changelog": "auto-changelog --starting-version 3.0.0 --commit-limit false --hide-credit"
+  },
+  "bugs": {
+    "url": "https://github.com/coreui/coreui-free-react-admin-template/issues"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 10",
+    "not op_mini all"
+  ],
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!**/*index.js",
+      "!src/serviceWorker.js",
+      "!src/polyfill.js"
+    ]
+  },
+  "engines": {
+    "node": ">=10",
+    "npm": ">=6"
+  }
+}
