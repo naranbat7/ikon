@@ -10,6 +10,10 @@ export const reducer = (state, action) => {
       return { ...state, isAdmin: action.payload };
     case "SET_NAME":
       return { ...state, name: action.payload };
+    case "SET_ID":
+      return { ...state, id: action.payload };
+    case "SET_URL":
+      return { ...state, url: action.payload };
     case "SET_COUNT":
       return { ...state, toastCount: action.payload };
     default:

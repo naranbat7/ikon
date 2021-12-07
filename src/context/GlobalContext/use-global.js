@@ -6,15 +6,14 @@ const INITIAL_STATE = {
   isLoading: false,
   authorization: {
     isAuthorized: false,
-    token: "",
-    appToken: "",
   },
   toast: {
     message: "",
     type: false,
   },
-  isAdmin: 0,
   name: "",
+  url: "",
+  id: 0,
   toastCount: 0,
 };
 
@@ -42,6 +41,14 @@ const useGlobalActions = (initialGlobal = INITIAL_STATE) => {
     dispatch({ type: "SET_NAME", payload: item });
   };
 
+  const setGlobalId = (item, quantity = 1) => {
+    dispatch({ type: "SET_ID", payload: item });
+  };
+
+  const setGlobalUrl = (item, quantity = 1) => {
+    dispatch({ type: "SET_URL", payload: item });
+  };
+
   const setGlobalCount = (item, quantity = 1) => {
     dispatch({ type: "SET_COUNT", payload: item });
   };
@@ -53,6 +60,8 @@ const useGlobalActions = (initialGlobal = INITIAL_STATE) => {
     setGlobalToast,
     setGlobalAdmin,
     setGlobalName,
+    setGlobalId,
+    setGlobalUrl,
   };
 };
 
@@ -64,6 +73,8 @@ export const GlobalProvider = ({ children }) => {
     setGlobalToast,
     setGlobalAdmin,
     setGlobalName,
+    setGlobalId,
+    setGlobalUrl,
   } = useGlobalActions();
 
   return (
@@ -75,6 +86,8 @@ export const GlobalProvider = ({ children }) => {
         setGlobalToast: setGlobalToast,
         setGlobalAdmin: setGlobalAdmin,
         setGlobalName: setGlobalName,
+        setGlobalId: setGlobalId,
+        setGlobalUrl: setGlobalUrl,
       }}
     >
       {children}

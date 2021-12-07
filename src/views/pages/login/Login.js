@@ -15,16 +15,26 @@ import {
   CAlert,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import axios from "axios";
 import ReCAPTCHA from "react-google-recaptcha";
 import Loader from "react-spinners/PulseLoader";
 import { Redirect } from "react-router-dom";
 
-import Constant from "../../../constants/CONSTANT";
 import { useGlobal } from "../../../context/GlobalContext/use-global";
+import {initializeApp} from "firebase/app";
+import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAxULjAJsgdEoGXPh476jSP6KyXiITbtMA",
+  authDomain: "ikon-c7552.firebaseapp.com",
+  projectId: "ikon-c7552",
+  storageBucket: "ikon-c7552.appspot.com",
+  messagingSenderId: "1040298841536",
+  appId: "1:1040298841536:web:b55daa9bff5ca25e2f6425",
+  measurementId: "G-GH1PZBR5E1"
+};
 
 const Login = () => {
-  const [body, setBody] = useState({ username: "", password: "" });
+  const [body, setBody] = useState({ email: "", password: "" });
   const [alert, setAlert] = useState(false);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -32,39 +42,39 @@ const Login = () => {
     globalData,
     setGlobalAuthorization,
     setGlobalToast,
-    setGlobalAdmin,
     setGlobalName,
+    setGlobalId,
+    setGlobalUrl
   } = useGlobal();
 
-  const formHandler = () => {
-    setLoading(true);
-    axios({
-      method: Constant.loginApi.method,
-      url: Constant.loginApi.url,
-      data: body,
-    })
-      .then((response) => {
-        setAlert(false);
-        setLoading(false);
-        setGlobalAuthorization({
-          isAuthorized: true,
-          token: response.data.token,
-          appToken: response.data.appToken,
-        });
-        setGlobalAdmin(response.data.isAdmin);
-        setGlobalName(response.data.name);
-        setGlobalToast({ message: "Амжилттай нэвтэрлээ.", type: true });
-      })
-      .catch((err) => {
-        const code = err.response ? err.response.status : 0;
-        if (code == 400) setMessage("Бүрэн гүйцэд бөглөнө үү.");
-        else if (code == 401) setMessage("Нэвтрэх нэр эсвэл нууц үг буруу.");
-        else if (code == 500) setMessage("Серверийн алдаа.");
-        else setMessage("Интернэт холболтоо шалгана уу.");
-        setAlert(true);
-        setLoading(false);
-        console.log("Error: " + err);
+  const formHandler = async () => {
+    try {
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const col = collection(db, 'users');
+      const snapshot = await getDocs(col);
+      const list = snapshot.docs.map(doc => doc.data());
+      let isLogged = false;
+      list.forEach((e) => {
+        if (e.email == body.email && e.password == body.password) {
+          setAlert(false);
+          setLoading(false);
+          setGlobalAuthorization({isAuthorized: true});
+          setGlobalName(e.name);
+          setGlobalId(e.id);
+          setGlobalUrl(e.profileUrl);
+          setGlobalToast({ message: "Амжилттай нэвтэрлээ.", type: true });
+          isLogged = true;
+        } 
+        isLogged = false;
       });
+      alert(isLogged);
+    } catch (err) {
+      console.error(err);
+      setMessage("Цахим шуудан эсвэл нууц үг буруу.");
+      setAlert(true);
+      setLoading(false);
+    }
   };
 
   const onChange = (value) => {
@@ -78,7 +88,7 @@ const Login = () => {
       <CContainer>
         {alert ? (
           <CRow className="justify-content-center">
-            <CCol md="8">
+            <CCol md="4">
               <CAlert color="danger">{message}</CAlert>
             </CCol>
           </CRow>
@@ -99,11 +109,11 @@ const Login = () => {
                       </CInputGroupPrepend>
                       <CInput
                         type="text"
-                        placeholder="Нэвтрэх нэр"
+                        placeholder="Цахим шуудан"
                         required={true}
-                        value={body.username}
+                        value={body.email}
                         onChange={(value) =>
-                          setBody({ ...body, username: value.target.value })
+                          setBody({ ...body, email: value.target.value })
                         }
                       />
                     </CInputGroup>
