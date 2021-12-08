@@ -1,18 +1,26 @@
 import React, { useState, useEffect } from "react";
 
-import { CCol, CRow, CButton } from "@coreui/react";
+import {
+  CCol,
+  CRow,
+  CButton,
+  CInput,
+} from "@coreui/react";
 
 import { useGlobal } from "../../context/GlobalContext/use-global";
 import Constant from "../../constants/CONSTANT";
 import { request } from "../../utils/service";
 
-import FormItem from "../components/news/FormItem";
-import ModalNewsAdd from "../forms/mission/NewsAdd";
+import FormItem from "../components/category/FormItem";
 
-const fields = ["№", "", "Нэр", "Нийтэлсэн огноо", "Үзсэн", "Үйлдэл"];
+const fields = [
+  "№",
+  "Нэр",
+  "Үйлдэл",
+];
 
-const Dashboard = (props) => {
-  const [modal, setModal] = useState(false);
+const Category = (props) => {
+  const [addTitle, setAddTitle] = useState("");
   const [data, setData] = useState([]);
   const {
     setGlobalLoading,
@@ -23,10 +31,9 @@ const Dashboard = (props) => {
     const _data = await request(
       setGlobalLoading,
       setGlobalToast,
-      Constant.getNewsApi.url,
-      Constant.getNewsApi.method
+      Constant.getCategoryApi.url,
+      Constant.getCategoryApi.method
     );
-    console.log(_data);
     setData(_data);
   };
 
@@ -34,13 +41,36 @@ const Dashboard = (props) => {
     getReq();
   }, []);
 
+  const addCategory = async () => {
+    await request(
+      setGlobalLoading,
+      setGlobalToast,
+      Constant.addCategoryApi.url,
+      Constant.addCategoryApi.method,
+      {
+        name: addTitle
+      }
+    );
+    setAddTitle("");
+    getReq();
+  }
+
   return (
     <>
       <CRow alignVertical="center">
+        <CCol>
+          <CInput
+            placeholder="Категорын нэр"
+            value={addTitle}
+            onChange={(val) =>
+                setAddTitle(val.target.value)
+              }
+        />
+        </CCol>
           <CCol xs="1">
             <CButton
               color="success"
-              onClick={() => setModal(true)}
+              onClick={addCategory}
             >
               Нэмэх
             </CButton>
@@ -62,26 +92,22 @@ const Dashboard = (props) => {
             </thead>
             <tbody>
               {data &&
-                data.map((item, key) => {
-                  return (
-                    <FormItem
-                      item={item}
-                      num={key + 1}
-                      getReq={getReq}
-                    />
-                  );
-                })}
+                data
+                  .map((item, key) => {
+                    return (
+                      <FormItem
+                        item={item}
+                        num={key + 1}
+                        getReq={getReq}
+                      />
+                    );
+                  })}
             </tbody>
           </table>
         </CCol>
       </CRow>
-      <ModalNewsAdd
-        modal={modal}
-        setModal={setModal}
-        refresh={getReq}
-      />
     </>
   );
 };
 
-export default React.memo(Dashboard);
+export default React.memo(Category);

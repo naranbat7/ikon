@@ -16,22 +16,12 @@ const TheHeaderDropdown = (props) => {
   return (
     <CDropdown inNav className="c-header-nav-items mx-2" direction="down">
       <CDropdownToggle className="c-header-nav-link" caret={true}>
+        <CIcon src={globalData.url} height={30} />
         <CLabel className="pr-2">
           {globalData.name.toUpperCase()}{" "}
-          {globalData.isAdmin == 1 ? "(админ)" : "(хянагч)"}
         </CLabel>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownItem onClick={props.showInfo}>
-          <CIcon name="cil-user" className="mfe-2" />
-          Мэдээллээ өөрчлөх
-        </CDropdownItem>
-        {globalData.isAdmin == 1 && (
-          <CDropdownItem onClick={props.showAdminList}>
-            <CIcon name="cil-settings" className="mfe-2" />
-            Админ тохиргоо
-          </CDropdownItem>
-        )}
         <CDropdownItem divider />
         <CDropdownItem
           onClick={() =>

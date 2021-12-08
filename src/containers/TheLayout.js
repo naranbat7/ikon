@@ -7,8 +7,6 @@ import { CToast, CToaster, CToastBody, CToastHeader } from "@coreui/react";
 
 import { useGlobal } from "../context/GlobalContext/use-global";
 import lottieJson from "../constants/LoadingLottie.json";
-import ModalForm from "../views/forms/admin/ModalForm";
-import ModalAdminList from "../views/forms/admin/ModalAdminList";
 
 const TheLayout = () => {
   const [toasts, setToasts] = useState([]);
@@ -60,14 +58,6 @@ const TheLayout = () => {
         </div>
         <TheFooter />
       </div>
-      <ModalForm
-        setModal={(value) => setForm({ ...form, visible1: value })}
-        modal={form.visible1}
-      />
-      <ModalAdminList
-        setModal={(value) => setForm({ ...form, visible2: value })}
-        modal={form.visible2}
-      />
       {Object.keys(toasters).map((toasterKey) => (
         <CToaster position={toasterKey} key={"toaster" + toasterKey}>
           {toasters[toasterKey].map((toast, key) => {
@@ -123,9 +113,6 @@ const Loader = () => {
         play
         style={{ width: "25%", height: "25%" }}
       />
-      <h5>
-        Таны хүсэлтийг биелүүлэхээр <b>АЛХАЖ</b> байна. Түр хүлээнэ үү...
-      </h5>
     </div>
   );
 };

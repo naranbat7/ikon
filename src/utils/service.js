@@ -2,21 +2,17 @@ const axios = require("axios");
 
 module.exports = {
   request: (
-    token = "",
     setGlobalLoading,
-    setGlobalAuthorization,
     setGlobalToast,
     url,
     method,
     body = {}
   ) => {
+    console.log(url);
     setGlobalLoading(true);
     return axios({
       method: method,
       url: url,
-      headers: {
-        Authorization: token,
-      },
       data: body,
     })
       .then((response) => {
@@ -31,10 +27,6 @@ module.exports = {
           setGlobalToast({ message: "Бүрэн гүйцэд бөглөнө үү.", type: false });
         else if (code == 401) {
           setGlobalToast({ message: "Нэвтрэх шаардлагатай.", type: false });
-          setGlobalAuthorization({
-            isAuthorized: false,
-            token: "",
-          });
         } else if (code == 403)
           setGlobalToast({ message: "Нууц үг буруу байна.", type: false });
         else if (code == 406)

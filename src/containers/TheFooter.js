@@ -5,8 +5,8 @@ const TheFooter = () => {
   return (
     <CFooter fixed={false}>
       <div>
-        <a href="http://www.alhay.mn" target="_blank" rel="noopener noreferrer">
-          Walk With Me LLC
+        <a href="https://ikon.mn" target="_blank" rel="noopener noreferrer">
+          Ikon
         </a>
         <span className="ml-1">&copy; 2020-{new Date().getFullYear()}</span>
       </div>
