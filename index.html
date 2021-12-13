@@ -600,7 +600,7 @@
                                     <li class="list-inline-item">
                                         <a href="#">${newsLast.adminName}</a>
                                     </li>
-                                    <li class="list-inline-item">${newsLast.publishedDate}</li>
+                                    <li class="list-inline-item">${newsLast.dateLbl}</li>
                                 </ul>
                             </div>
                             <a href="#">
@@ -613,29 +613,30 @@
                         </div>`;
             document.getElementById("lastNews").innerHTML = lastNews;
 
-            var covids = news.filter(e => e.covid == true);
+            var covids = news.filter(e => e.isCovid == true);
             var covid = covids[covids.length - 1];
-            var covidNews = `<div class="post post-carousel">
-                                            <div class="thumb rounded">
-                                                <a href="#" class="category-badge position-absolute">COVID-19</a>
-                                                <a href="#">
-                                                    <div class="inner">
-                                                        <img src="${covid.imageUrl}" alt="">
-                                                    </div>
-                                                </a>
-                                            </div>
-                                            <h5 class="post-title mb-0 mt-4">
-                                                <a href="#">${covid.name}</a>
-                                            </h5>
-                                            <ul class="meta list-inline mt-2 mb-0">
-                                                <li class="list-inline-item">
-                                                    <a href="#">${covid.adminName}</a>
-                                                </li>
-                                                <li class="list-inline-item">${covid.publishedDate}</li>
-                                            </ul>
-                                        </div>`;
-            document.getElementById("covidNews").innerHTML = covidNews;
-
+            if (covid) {
+                var covidNews = `<div class="post post-carousel">
+                                                <div class="thumb rounded">
+                                                    <a href="#" class="category-badge position-absolute">COVID-19</a>
+                                                    <a href="#">
+                                                        <div class="inner">
+                                                            <img src="${covid.imageUrl}" alt="">
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <h5 class="post-title mb-0 mt-4">
+                                                    <a href="#">${covid.name}</a>
+                                                </h5>
+                                                <ul class="meta list-inline mt-2 mb-0">
+                                                    <li class="list-inline-item">
+                                                        <a href="#">${covid.adminName}</a>
+                                                    </li>
+                                                    <li class="list-inline-item">${covid.dateLbl}</li>
+                                                </ul>
+                                            </div>`;
+                document.getElementById("covidNews").innerHTML = covidNews;
+            }
 
             // Categories
 
@@ -673,7 +674,7 @@
                                                 <li class="list-inline-item">
                                                     <a href="#">${cats.find(e => e.id == news[i].categoryId).name}</a>
                                                 </li>
-                                                <li class="list-inline-item">${news[i].publishedDate.slice(0, 10)}</li>
+                                                <li class="list-inline-item">${news[i].dateLbl}</li>
                                             </ul>
                                             <h5 class="post-tile">
                                                 <a href="#">
@@ -717,7 +718,7 @@
             document.getElementById("newNews").innerHTML = newNews;
 
             // Sponsored мэдээ
-            var specialList = news.filter(e => e.sponsored == true);
+            var specialList = news.filter(e => e.isSponsored == true);
             if (specialList.length > 0) {
                 var specialLast = specialList[specialList.length - 1];
                 var specialSponsored = `<div class="post">
@@ -739,7 +740,7 @@
                                                         ${specialLast.adminName}
                                                     </a>
                                                 </li>
-                                                <li class="list-inline-item">${specialLast.publishedDate.slice(0, 10)}</li>
+                                                <li class="list-inline-item">${specialLast.dateLbl}</li>
                                             </ul>
                                             <h5 class="post-title mb-3 mt-3">
                                                 <a href="#">${specialLast.name.slice(0, 40) + "..."}</a>
@@ -772,7 +773,7 @@
                                                 </a>
                                             </h6>
                                             <ul class="meta list-inline mt-1 mb-0">
-                                                <li class="list-inline-item">${specialList[i].publishedDate.slice(0, 10)}</li>
+                                                <li class="list-inline-item">${specialList[i].dateLbl}</li>
                                             </ul>
                                         </div>
                                     </div>`;
@@ -803,7 +804,7 @@
                                                 <a href="#">${mostViews[i].name}</a>
                                             </h6>
                                             <ul class="meta list-inline mt-1 mb-0">
-                                                <li class="list-inline-item">${mostViews[i].publishedDate.slice(0, 10)}</li>
+                                                <li class="list-inline-item">${mostViews[i].dateLbl}</li>
                                             </ul>
                                         </div>
                                     </div>`;
@@ -822,12 +823,10 @@
                                                 <a href="#">${recents[i].name}</a>
                                             </h6>
                                             <ul class="meta list-inline mt-1 mb-0">
-                                                <li class="list-inline-item">${recents[i].publishedDate.slice(0, 10)}</li>
+                                                <li class="list-inline-item">${recents[i].dateLbl}</li>
                                             </ul>
                                         </div>
                                     </div>`;
-
-                console.log(recentHtmls);
 
                 document.getElementById("popular").innerHTML = mostHtmls;
                 document.getElementById("recent").innerHTML = recentHtmls;
