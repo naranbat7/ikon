@@ -1,9 +1,11 @@
 package mn.edu.num.naranbat.news.controller;
 
 import mn.edu.num.naranbat.news.model.News;
+import mn.edu.num.naranbat.news.model.NewsDTO;
 import mn.edu.num.naranbat.news.repository.NewsRepository;
+import mn.edu.num.naranbat.news.service.NewsServiceImplRelative;
 import mn.edu.num.naranbat.news.util.Utils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -12,63 +14,54 @@ import java.util.Map;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-public class NewsController
-{
-    @Autowired
-    private NewsRepository newsRepo;
+@RequestMapping("news")
+public class NewsController {
 
-    @GetMapping("/news")
-    public List<News> getItems()
-    {
-        return newsRepo.findAll();
+    private final NewsRepository newsRepo;
+
+    public NewsController(NewsRepository newsRepo) {
+        this.newsRepo = newsRepo;
     }
 
-    @GetMapping("/news/{id}")
+    @GetMapping
+    public ResponseEntity<List<News>> getItems() {
+        var items = newsRepo.findAll();
+        items.forEach(e -> e.setService(new NewsServiceImplRelative()));
+        items.forEach(e -> e.setDateLbl(e.getService().getPublishedDate(e.getPublishedDate())));
+        return ResponseEntity.ok(items);
+    }
+
+    @GetMapping("/{id}")
     @ResponseBody
-    public News getItem(@PathVariable Long id) throws Exception
-    {
+    public News getItem(@PathVariable Long id) {
         try {
             News item = newsRepo.findById(id).get();
             item.setViews(item.getViews() + 1);
             newsRepo.save(item);
             return item;
         } catch (Exception e) {
-            throw new Exception();
+            throw e;
         }
     }
 
-    @PostMapping("/news")
+    @PostMapping
     @ResponseBody
-    public News addItem(@RequestBody Map<String, Object> body) throws Exception {
+    public News addItem(@RequestBody NewsDTO body) {
         try {
-            News item = new News();
-            item.setId(Utils.generateUniqueLong());
-            item.setName((String)body.get("name"));
-            item.setCovid((Boolean) body.get("isCovid"));
-            item.setSponsored((Boolean) body.get("isSponsored"));
-            item.setImageUrl((String) body.get("imageUrl"));
-            item.setPublishedDate(LocalDateTime.now());
-            item.setAdminId((int) body.get("adminId"));
-            item.setAdminName((String) body.get("adminName"));
-            item.setCategoryId((Long) body.get("categoryId"));
-            item.setAdminUrl((String) body.get("adminUrl"));
-            item.setViews(0);
-            item.setContent((String) body.get("content"));
-            newsRepo.insert(item);
-            return item;
+            return newsRepo.insert(NewsDTO.mapper(body));
         } catch (Exception e) {
-            throw new Exception();
+            throw e;
         }
     }
 
-    @DeleteMapping("/news/{id}")
+    @DeleteMapping("/{id}")
     @ResponseBody
-    public String deleteItem(@PathVariable Long id) throws Exception {
+    public String deleteItem(@PathVariable Long id) {
         try {
             newsRepo.deleteById(id);
             return "success";
         } catch (Exception e) {
-            throw new Exception();
+            throw e;
         }
     }
 }
