@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Service
 public class NewsServiceImplCalendar implements NewsService {
-    private static final String[] dates = {"Даваа", "Мягмар", "Лхагва", "Пүрэв", "Баасан", "Бямба", "Ням"};
+    private static final String[] dates = {"Ням", "Даваа", "Мягмар", "Лхагва", "Пүрэв", "Баасан", "Бямба"};
 
     @Override
     public String getPublishedDate(LocalDateTime value) {

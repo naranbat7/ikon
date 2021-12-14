@@ -1,16 +1,16 @@
 package mn.edu.num.naranbat.news.controller;
 
+import mn.edu.num.naranbat.news.httpService.HttpService;
 import mn.edu.num.naranbat.news.model.News;
 import mn.edu.num.naranbat.news.model.NewsDTO;
 import mn.edu.num.naranbat.news.repository.NewsRepository;
+import mn.edu.num.naranbat.news.service.NewsService;
+import mn.edu.num.naranbat.news.service.NewsServiceImplCalendar;
 import mn.edu.num.naranbat.news.service.NewsServiceImplRelative;
-import mn.edu.num.naranbat.news.util.Utils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -25,8 +25,9 @@ public class NewsController {
 
     @GetMapping
     public ResponseEntity<List<News>> getItems() {
+        NewsService service = new NewsServiceImplCalendar();
         var items = newsRepo.findAll();
-        items.forEach(e -> e.setService(new NewsServiceImplRelative()));
+        items.forEach(e -> e.setService(service));
         items.forEach(e -> e.setDateLbl(e.getService().getPublishedDate(e.getPublishedDate())));
         return ResponseEntity.ok(items);
     }
@@ -48,8 +49,11 @@ public class NewsController {
     @ResponseBody
     public News addItem(@RequestBody NewsDTO body) {
         try {
-            return newsRepo.insert(NewsDTO.mapper(body));
+            HttpService.sendMail(body.getName());
+            News news = newsRepo.insert(NewsDTO.mapper(body));
+            return news;
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             throw e;
         }
     }
