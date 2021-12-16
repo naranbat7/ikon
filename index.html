@@ -594,7 +594,7 @@
                             <div class="details clearfix">
                                 <a href="#" class="category-badge">${cats.find(e => e.id == newsLast.categoryId).name}</a>
                                 <h2 class="post-title">
-                                    <a href="#">${newsLast.name}</a>
+                                    <a href="news.html?id=${newsLast.id}">${newsLast.name}</a>
                                 </h2>
                                 <ul class="meta list-inline mb-0">
                                     <li class="list-inline-item">
@@ -626,7 +626,7 @@
                                                     </a>
                                                 </div>
                                                 <h5 class="post-title mb-0 mt-4">
-                                                    <a href="#">${covid.name}</a>
+                                                    <a href="news.html?id=${covid.id}">${covid.name}</a>
                                                 </h5>
                                                 <ul class="meta list-inline mt-2 mb-0">
                                                     <li class="list-inline-item">
@@ -677,7 +677,7 @@
                                                 <li class="list-inline-item">${news[i].dateLbl}</li>
                                             </ul>
                                             <h5 class="post-tile">
-                                                <a href="#">
+                                                <a href="news.html?id=${news[i].id}">
                                                     ${news[i].name}
                                                 </a>
                                             </h5>
@@ -743,7 +743,7 @@
                                                 <li class="list-inline-item">${specialLast.dateLbl}</li>
                                             </ul>
                                             <h5 class="post-title mb-3 mt-3">
-                                                <a href="#">${specialLast.name.slice(0, 40) + "..."}</a>
+                                                <a href="news.html?id=${specialLast.id}">${specialLast.name.slice(0, 40) + "..."}</a>
                                             </h5>
                                             <p class="excerpt mb-0">
                                                 ${specialLast.content.slice(0, 100) + "..."}
@@ -768,7 +768,7 @@
                                         </div>
                                         <div class="details clearfix">
                                             <h6 class="post-title my-0">
-                                                <a href="#">
+                                                <a href="news.html?id=${specialList[i].id}">
                                                     ${specialList[i].name.slice(0, 40)}
                                                 </a>
                                             </h6>
@@ -783,7 +783,7 @@
 
             // Most viewed
             var recents = news.slice(0, 3);
-            var mostViews = news.reverse().slice(0, 3);
+            var mostViews = news.sort((a, b) => b.views - a.views).slice(0, 3);
             var mostHtmls = ``;
             var recentHtmls = ``;
 
@@ -801,7 +801,7 @@
                                         </div>
                                         <div class="details clearfix">
                                             <h6 class="post-title my-0">
-                                                <a href="#">${mostViews[i].name}</a>
+                                                <a href="news.html?id=${mostViews[i].id}">${mostViews[i].name}</a>
                                             </h6>
                                             <ul class="meta list-inline mt-1 mb-0">
                                                 <li class="list-inline-item">${mostViews[i].dateLbl}</li>
@@ -820,7 +820,7 @@
                                         </div>
                                         <div class="details clearfix">
                                             <h6 class="post-title my-0">
-                                                <a href="#">${recents[i].name}</a>
+                                                <a href="news.html?id=${recents[i].id}">${recents[i].name}</a>
                                             </h6>
                                             <ul class="meta list-inline mt-1 mb-0">
                                                 <li class="list-inline-item">${recents[i].dateLbl}</li>
